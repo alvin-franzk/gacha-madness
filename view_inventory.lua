@@ -4,8 +4,12 @@
 --
 -----------------------------------------------------------------------------------------
 
+local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+local loot = require("module_lootboxLogic")
+local currency = require("module_currency")
+local inventory = require("module_inventory")
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -20,10 +24,15 @@ function scene:create( event )
 	background:setFillColor( 1 )	-- white
 	
 	-- create some text
-	local title = display.newText( "Second View", display.contentCenterX, 125, native.systemFont, 32 )
+	local title = display.newText( "Inventory View", display.contentCenterX, 125, native.systemFont, 32 )
 	title:setFillColor( 0 )	-- black
-
-	local newTextParams = { text = "Loaded by the second tab's\n\"onPress\" listener\nspecified in the 'tabButtons' table", 
+	
+	-- display inventory
+	local inventoryStatus = {}
+	local items = inventory.getInventory()
+	if #items == 0 then
+		print("Inventory is empty.")
+		local inventoryStatus = { text = "Inventory is empty.", 
 							x = display.contentCenterX + 10, 
 							y = title.y + 215, 
 							width = 310, 
@@ -31,13 +40,21 @@ function scene:create( event )
 							font = native.systemFont, 
 							fontSize = 14, 
 							align = "center" }
-	local summary = display.newText( newTextParams )
-	summary:setFillColor( 0 ) -- black
-	
+		local summary = display.newText( inventoryStatus )
+		summary:setFillColor( 0 ) -- black
+	end
+
+	print("Your Inventory:")
+    for i, item in ipairs(items) do
+        print(i .. ". " .. item.name .. " (Value: " .. item.value .. ")")
+    end
+
+
 	-- all objects must be added to group (e.g. self.view)
 	sceneGroup:insert( background )
 	sceneGroup:insert( title )
 	sceneGroup:insert( summary )
+
 end
 
 function scene:show( event )

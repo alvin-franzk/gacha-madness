@@ -1,11 +1,26 @@
 -----------------------------------------------------------------------------------------
 --
--- view1.lua
+-- view2.lua
 --
 -----------------------------------------------------------------------------------------
 
 local composer = require( "composer" )
 local scene = composer.newScene()
+local inventory = require("module_inventory")
+
+-- Function to handle receiving a free loot box
+
+local function onReceiveFreeLootBox()
+
+    local freeLootBox = {
+        name = "Free Loot Box",
+        value = 50, -- Example value
+        imagePath = "button2@2x.png" -- Replace with your image path
+    }
+
+	inventory.addLootBox(freeLootBox) -- Add the loot box to the inventory
+    print("Received a free loot box: " .. freeLootBox.name)
+end
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -20,23 +35,25 @@ function scene:create( event )
 	background:setFillColor( 1 )	-- white
 	
 	-- create some text
-	local title = display.newText( "First View", display.contentCenterX, 125, native.systemFont, 32 )
+	local title = display.newText( "Store View", display.contentCenterX, 125, native.systemFont, 32 )
 	title:setFillColor( 0 )	-- black
-	
-	local newTextParams = { text = "Loaded by the first tab's\n\"onPress\" listener\nspecified in the 'tabButtons' table", 
-						x = display.contentCenterX + 10, 
-						y = title.y + 215, 
-						width = 310, height = 310, 
-						font = native.systemFont, fontSize = 14, 
-						align = "center" }
-	local summary = display.newText( newTextParams )
-	summary:setFillColor( 0 ) -- black
+
+	-- Create a button for receiving a free loot box
+    local receiveButton = display.newRoundedRect(display.contentCenterX, display.contentCenterY, 200, 50, 12)
+    receiveButton:setFillColor(0.2, 0.6, 0.8) -- Button color
+
+	local buttonText = display.newText("Receive Free Loot Box", display.contentCenterX, display.contentCenterY, native.systemFont, 20)
+    buttonText:setFillColor(1, 1, 1) -- Text color
+
+    -- Add a touch listener to the button
+    receiveButton:addEventListener("tap", onReceiveFreeLootBox)
 
 	
 	-- all objects must be added to group (e.g. self.view)
 	sceneGroup:insert( background )
 	sceneGroup:insert( title )
-	sceneGroup:insert( summary )
+	sceneGroup:insert(receiveButton)
+    sceneGroup:insert(buttonText)
 end
 
 function scene:show( event )

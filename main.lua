@@ -13,12 +13,20 @@ local composer = require "composer"
 
 
 -- event listeners for tab buttons:
-local function onFirstView( event )
-	composer.gotoScene( "view1" )
+local function showLootBoxesView( event )
+	composer.gotoScene( "view_lootboxes" )
 end
 
-local function onSecondView( event )
-	composer.gotoScene( "view2" )
+local function showInventoryView( event )
+	composer.gotoScene( "view_inventory" )
+end
+
+local function showStoreView( event )
+	composer.gotoScene( "view_store" )
+end
+
+local function showStatsView( event )
+	composer.gotoScene( "view_stats" )
 end
 
 
@@ -26,8 +34,10 @@ end
 
 -- table to setup buttons
 local tabButtons = {
-	{ label="First", defaultFile="button1.png", overFile="button1-down.png", width = 32, height = 32, onPress=onFirstView, selected=true },
-	{ label="Second", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=onSecondView },
+	{ label="Open Crates", defaultFile="button1.png", overFile="button1-down.png", width = 32, height = 32, onPress=showLootBoxesView, selected=true },
+	{ label="Inventory", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showInventoryView },
+	{ label="Store", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showStoreView },
+	{ label="Stats", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showStatsView },
 }
 
 -- create the actual tabBar widget
@@ -36,4 +46,4 @@ local tabBar = widget.newTabBar{
 	buttons = tabButtons
 }
 
-onFirstView()	-- invoke first tab button's onPress event manually
+showLootBoxesView()	-- invoke first tab button's onPress event manually
