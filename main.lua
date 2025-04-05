@@ -5,39 +5,57 @@
 -----------------------------------------------------------------------------------------
 
 -- show default status bar (iOS)
-display.setStatusBar( display.DefaultStatusBar )
+display.setStatusBar( display.HiddenStatusBar )
 
 -- include Corona's "widget" library
 local widget = require "widget"
 local composer = require "composer"
 
+-- Function to transition to the intro scene
+local function showIntro()
+	composer.gotoScene( "scenes.intro" )
+end
 
 -- event listeners for tab buttons:
-local function showLootBoxesView( event )
-	composer.gotoScene( "view_lootboxes" )
+local function showLootBoxesView()
+	composer.gotoScene( "scenes.view_lootboxes" )
 end
 
-local function showInventoryView( event )
-	composer.gotoScene( "view_inventory" )
+local function showInventoryView()
+	composer.gotoScene( "scenes.view_inventory" )
 end
 
-local function showStoreView( event )
-	composer.gotoScene( "view_store" )
+local function showStatsView()
+	composer.gotoScene( "scenes.view_stats" )
 end
-
-local function showStatsView( event )
-	composer.gotoScene( "view_stats" )
-end
-
-
--- create a tabBar widget with two buttons at the bottom of the screen
 
 -- table to setup buttons
 local tabButtons = {
-	{ label="Open Crates", defaultFile="button1.png", overFile="button1-down.png", width = 32, height = 32, onPress=showLootBoxesView, selected=true },
-	{ label="Inventory", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showInventoryView },
-	{ label="Store", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showStoreView },
-	{ label="Stats", defaultFile="button2.png", overFile="button2-down.png", width = 32, height = 32, onPress=showStatsView },
+	{ 
+		label = "Open Crates",
+		defaultFile = "button1.png",
+		overFile = "button1-down.png",
+		width = 32,
+		height = 32,
+		onPress = showLootBoxesView,
+		selected = true
+	},
+	{
+		label = "Inventory",
+		defaultFile = "button2.png",
+		overFile = "button2-down.png",
+		width = 32,
+		height = 32,
+		onPress = showInventoryView
+	},
+	{
+		label = "Stats",
+		defaultFile = "button2.png",
+		overFile = "button2-down.png",
+		width = 32,
+		height = 32,
+		onPress = showStatsView
+	}
 }
 
 -- create the actual tabBar widget

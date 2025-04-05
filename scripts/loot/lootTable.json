@@ -1,0 +1,267 @@
+{
+    "Junk": {
+        "Fork": {
+            "itemType": "Dagger",
+            "rarity": "Junk",
+            "value": 1
+        },
+        "Spoon": {
+            "itemType": "Dagger",
+            "rarity": "Junk",
+            "value": 1
+        },
+        "Butterknife": {
+            "itemType": "Dagger",
+            "rarity": "Junk",
+            "value": 5
+        },
+        "Rolling Pin": {
+            "itemType": "Mace",
+            "rarity": "Junk",
+            "value": 1
+        },
+        "Cast Iron Pan": {
+            "itemType": "Mace",
+            "rarity": "Junk",
+            "value": 10
+        },
+        "Long Stick": {
+            "itemType": "Staff",
+            "rarity": "Junk",
+            "value": 5
+        },
+        "Lute": {
+            "itemType": "Mace",
+            "rarity": "Junk",
+            "value": 20
+        },
+        "Slingshot": {
+            "itemType": "Projectile",
+            "rarity": "Junk",
+            "value": 10
+        }
+    },
+
+    "Common": {
+        "Training Sword": {
+            "itemType": "Sword",
+            "rarity": "Common",
+            "value": 20
+        },
+        "Woodchopper's Axe": {
+            "itemType": "Axe",
+            "rarity": "Common",
+            "value": 25
+        },
+        "Quarterstaff": {
+            "itemType": "Staff",
+            "rarity": "Common",
+            "value": 50
+        },
+        "Claymore": {
+            "itemType": "Greatsword",
+            "rarity": "Common",
+            "value": 75
+        },
+        "Battleaxe": {
+            "itemType": "Greataxe",
+            "rarity": "Common",
+            "value": 100
+        }
+    },
+
+    "Uncommon": {
+        "Bludgeon": {
+            "itemType": "Mace",
+            "rarity": "Uncommon",
+            "value": 100
+        },
+        "Scimitar": {
+            "itemType": "Sword",
+            "rarity": "Uncommon",
+            "value": 125
+        },
+        "Short Bow": {
+            "itemType": "Shortbow",
+            "rarity": "Uncommon",
+            "value": 150
+        },
+        "Halberd": {
+            "itemType": "Polearm",
+            "rarity": "Uncommon",
+            "value": 175
+        },
+        "War Hammer": {
+            "itemType": "Greathammer",
+            "rarity": "Uncommon",
+            "value": 200
+        }
+    },
+
+    "Rare": {
+        "Morningstar": {
+            "itemType": "Mace",
+            "rarity": "Rare",
+            "value": 200
+        },
+        "Tanto": {
+            "itemType": "Dagger",
+            "rarity": "Rare",
+            "value": 250
+        },
+        "Daikyu": {
+            "itemType": "Longbow",
+            "rarity": "Rare",
+            "value": 300
+        },
+        "Arbalest": {
+            "itemType": "Crossbow",
+            "rarity": "Rare",
+            "value": 350
+        },
+        "Katana": {
+            "itemType": "Sword",
+            "rarity": "Rare",
+            "value": 400
+        }
+    },
+
+    "Epic": {
+        "Excalibur": {
+            "itemType": "Greatsword",
+            "rarity": "Epic",
+            "value": 400
+        },
+        "Tenskwatawa": {
+            "itemType": "Staff",
+            "rarity": "Epic",
+            "value": 600
+        },
+        "Masamune": {
+            "itemType": "Greatsword",
+            "rarity": "Epic",
+            "value": 800
+        }
+    },
+
+    "Legendary": {
+        "Ruyi Jingu Bang": {
+            "itemType": "Staff",
+            "rarity": "Legendary",
+            "value": 1600
+        },
+        "Mjölnir": {
+            "itemType": "Mace",
+            "rarity": "Legendary",
+            "value": 1400
+        },
+        "Shamsir-e Zomorrodnegar": {
+            "itemType": "Sword",
+            "rarity": "Legendary",
+            "value": 1200
+        },
+        "Zeus' Thunderbolt": {
+            "itemType": "Projectile",
+            "rarity": "Legendary",
+            "value": 1000
+        },
+        "Sharur": {
+            "itemType": "Mace",
+            "rarity": "Legendary",
+            "value": 800
+        }
+    },
+
+    "Mythical": {
+        "Daedalus": {
+            "itemType": "Crossbow",
+            "rarity": "Mythical",
+            "value": 2400
+        },
+        "Crystalis": {
+            "itemType": "Sword",
+            "rarity": "Mythical",
+            "value": 2000
+        },
+        "Octarine Core": {
+            "itemType": "Artifact",
+            "rarity": "Mythical",
+            "value": 1600
+        }
+    },
+
+    "Arcane": {
+        "Fractal Horns of Inner Abysm": {          
+            "itemType": "Helmet",
+            "rarity": "Arcane",
+            "value": 3200
+        },
+        "Demon Eater": {           
+            "itemType": "Greatsword",
+            "rarity": "Arcane",
+            "value": 3000
+        },
+        "Blades of Voth Domosh": {
+            "itemType": "Sword",
+            "rarity": "Arcane",
+            "value": 2800
+        },
+        "Manifold Paradox": {          
+            "itemType": "Dagger",
+            "rarity": "Arcane",
+            "value": 1600
+        }
+    },
+
+    "Demonic": {
+        "Great Sage's Reckoning": {           
+            "itemType": "Staff",
+            "rarity": "Demonic",
+            "value": 6400
+        },
+        "Call of the Bladeform Legacy": {            
+            "itemType": "Sword",
+            "rarity": "Demonic",
+            "value": 3200
+        }
+    },
+
+    "Voidlike": {
+        "Planetfall": {
+            "itemType": "Greathammer",
+            "rarity": "Voidlike",
+            "value": 6400
+        },
+        "Claszian Apostasy": {
+            "itemType": "Mace",
+            "rarity": "Voidlike",
+            "value": 12800
+        }
+    },
+
+    "Divine": {
+        "The Divine Rapier": {
+            "itemType": "Sword",
+            "rarity": "Divine",
+            "value": 12800
+        },
+        "The Resurrection of Shendelzare": {
+            "itemType": "Scythe",
+            "rarity": "Divine",
+            "value": 25600
+        }
+    },
+
+    "Cosmic": {
+        "Eye of Cthulhu": {
+            "itemType": "Artifact",
+            "rarity": "Cosmic",
+            "value": 25600
+        },
+        "Azhorra-Tha's Fury": {
+            "itemType": "Sword",
+            "rarity": "Cosmic",
+            "value": 51200
+        }
+    }
+}
