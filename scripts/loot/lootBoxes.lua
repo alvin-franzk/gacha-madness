@@ -4,14 +4,29 @@ local json = require("json")
 -- Load the loot table from the JSON file
 local filePath = system.pathForFile("lootTable.json", system.DocumentsDirectory)
 local file = io.open(filePath, "r")
-local lootTiers
+local lootTable
 if file then
     local contents = file:read("*a")
-    lootTiers = json.decode(contents)  -- Decoding JSON into a Lua table
+    lootTable = json.decode(contents)  -- Decoding JSON into a Lua table
     io.close(file)
 end
 
--- Define a table to store all loot boxes
+-- Function to get loot details by name
+local function getLootDetails(lootName)
+    for tier, loot in pairs(lootTable) do -- for ever tier, loop through these loot
+        if loot[lootName] then
+            local lootData = lootTable[tier][lootName]
+            return {
+                name = lootName,
+                itemType = lootData.itemType,
+                rarity = lootData.rarity,
+                value = lootData.value
+            }
+        end
+    end
+    return nil  -- Return nil if the item is not found
+end
+
 local lootBoxes = {
 
     Commoner = {
@@ -19,13 +34,13 @@ local lootBoxes = {
         price = 100,
         isUnlocked = true,
         lootItems = {
-            { tier = "Common", name = "Fork" },
-            { tier = "Common", name = "Spoon" },
-            { tier = "Common", name = "Butterknife" },
-            { tier = "Common", name = "Long Stick" },
-            { tier = "Common", name = "Lute" },
-            { tier = "Uncommon", name = "Bludgeon" },
-            { tier = "Rare", name = "Arbalest" }
+            getLootDetails("Fork"),
+            getLootDetails("Spoon"),
+            getLootDetails("Butterknife"),
+            getLootDetails("Long Stick"),
+            getLootDetails("Lute"),
+            getLootDetails("Bludgeon"),
+            getLootDetails("Arbalest")
         }
     },
 
@@ -34,12 +49,12 @@ local lootBoxes = {
         price = 150,
         isUnlocked = true,
         lootItems = {
-            { tier = "Common", name = "Fork" },
-            { tier = "Common", name = "Spoon" },
-            { tier = "Common", name = "Butterknife" },
-            { tier = "Uncommon", name = "Bludgeon" },
-            { tier = "Uncommon", name = "Scimitar" },
-            { tier = "Rare", name = "Arbalest" }
+            getLootDetails("Fork"),
+            getLootDetails("Spoon"),
+            getLootDetails("Butterknife"),
+            getLootDetails("Bludgeon"),
+            getLootDetails("Scimitar"),
+            getLootDetails("Arbalest")
         }
     },
 
@@ -48,18 +63,19 @@ local lootBoxes = {
         price = 250,
         isUnlocked = true,
         lootItems = {
-            { tier = "Common", name = "Training Sword" },
-            { tier = "Common", name = "Claymore" },
-            { tier = "Common", name = "Battleaxe" },
-            { tier = "Uncommon", name = "Scimitar" },
-            { tier = "Uncommon", name = "War Hammer" },
-            { tier = "Rare", name = "Arbalest" },
-            { tier = "Rare", name = "Katana" },
+            getLootDetails("Training Sword"),
+            getLootDetails("Claymore"),
+            getLootDetails("Battleaxe"),
+            getLootDetails("Scimitar"),
+            getLootDetails("War Hammer"),
+            getLootDetails("Arbalest"),
+            getLootDetails("Katana")
         }
     }
 }
 
 return lootBoxes
+
 -- Example usage: Access a specific loot box
 --[[
 
