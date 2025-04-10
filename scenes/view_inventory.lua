@@ -7,9 +7,6 @@
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
-local loot = require("scripts.loot.module_lootboxLogic")
-local currency = require("scripts.player.module_currency")
-local inventory = require("scripts.player.module_inventory")
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -26,34 +23,11 @@ function scene:create( event )
 	-- create some text
 	local title = display.newText( "Inventory View", display.contentCenterX, 125, native.systemFont, 32 )
 	title:setFillColor( 0 )	-- black
-	
-	-- display inventory
-	local inventoryStatus = {}
-	local items = inventory.getInventory()
-	if #items == 0 then
-		print("Inventory is empty.")
-		local inventoryStatus = { text = "Inventory is empty.", 
-							x = display.contentCenterX + 10, 
-							y = title.y + 215, 
-							width = 310, 
-							height = 310, 
-							font = native.systemFont, 
-							fontSize = 14, 
-							align = "center" }
-		local summary = display.newText( inventoryStatus )
-		summary:setFillColor( 0 ) -- black
-	end
-
-	print("Your Inventory:")
-    for i, item in ipairs(items) do
-        print(i .. ". " .. item.name .. " (Value: " .. item.value .. ")")
-    end
 
 
 	-- all objects must be added to group (e.g. self.view)
 	sceneGroup:insert( background )
 	sceneGroup:insert( title )
-	sceneGroup:insert( summary )
 
 end
 

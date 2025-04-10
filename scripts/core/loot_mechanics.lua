@@ -1,8 +1,10 @@
 local playerCurrency = require("scripts.player.playerCurrency")
 local playerInventory = require("scripts.player.playerInventory")
+local lootBoxes = require("scripts.loot.lootBoxes")
 
 -- Function to select loot based on rarity probabilities
 local function getLoot(lootBox)
+    math.randomseed(os.time()) -- rng seed
     -- Weights for the rarities (higher weight means higher chance)
     local rarityWeights = {
         Junk = 70,          -- 70% chance for Junk loot
@@ -28,16 +30,17 @@ local function getLoot(lootBox)
     -- Calculate total weight for possible loot
     local totalWeight = 0
     for _, loot in ipairs(lootBox.lootItems) do
-        totalWeight = totalWeight + rarityWeights[loot.tier]
+        totalWeight = totalWeight + rarityWeights[loot.rarity]
     end
 
+    -- #TODO: Fix loot retrieval algorithm
     -- Then, generate a random number to determine which loot are possible
     local randomNum = math.random(1, totalWeight)
     local runningWeight = 0
     
     -- Collect all items that fall under the chosen weight
     for _, loot in ipairs(lootBox.lootItems) do
-        runningWeight = runningWeight + rarityWeights[loot.tier]
+        runningWeight = runningWeight + rarityWeights[loot.rarity]
         if randomNum <= runningWeight then
             table.insert(possibleLoot, loot)    -- Insert possible loot
         end
@@ -52,22 +55,28 @@ local function getLoot(lootBox)
 end
 
 -- Function to open the loot box
-local function openLootBox(lootBox) 
+local function openLootBox(lootBox)
     -- Check if player has enough currency to open
     if playerCurrency.getBalance >= lootBox.price then
+        -- Deduct player currency
+        playerCurrency.deductCurrency(lootBox.price)
+
         -- DEBUG: Console stuff
         print("Opening loot box: " .. lootBox.name)
         print("Price: " .. lootBox.price .. " gold")
-        print("Loot Inside:")
+
         -- Get one item based on rarity chances
         local lootItem = getLoot(lootBox)
+        -- Store loot to player inventory
+        playerInventory.storeLoot(lootItem)
 
-        -- Print the selected loot item
+        -- DEBUG: Print the selected loot item
         if lootItem then
-            print(string.format("%s (%s) - Value: %d", lootItem.name, lootItem.itemType, lootItem.value))
+            print(string.format("Received %s (%s) - Value: %d", lootItem.name, lootItem.itemType, lootItem.value))
         else
             print("No loot found.")
         end
     else
         print("Not enough currency.") -- #TODO: Replace with function that shows message box
+    end
 end

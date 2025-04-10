@@ -7,15 +7,52 @@
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+local lootBoxes = require("scripts.loot.lootBoxes")
+local core = require("scripts.core.loot_mechanics")
 
--- Function to create a loot box button
+local currentSortOrder = "Highest Value"
 
+-- Functions for sort orders
+local function getCurrentSortOrder()
+	return currentSortOrder
+end
 
--- Function to display loot boxes
+local function setCurrentSortOrder(sortOrder)
+	currentSortOrder = sortOrder;
+end
 
+-- Function to handle sort button tap
+local function onSortTap()
+    native.showAlert("Sort by", "Choose a sort option", { "Highest Value", "Lowest Value", "Alphabetical" }, function(event)
+        if event.action == "clicked" then
+            local index = event.index
+            -- Call sort function based on index
+            if index == 1 then
+				-- Call your sorting function here
+                setCurrentSortOrder("Highest Value")
+            elseif index == 2 then
+                -- Call your sorting function here
+				setCurrentSortOrder("Lowest Value")
+            elseif index == 3 then
+                -- Call your sorting function here
+				setCurrentSortOrder("Alphabetically")
+            end
+			-- Update the sortText after the sort order is set
+            scene.sortText.text = "Sort by: " .. getCurrentSortOrder()
+        end
+    end)
+end
 
--- Example function to open a loot box when a button is tapped
-
+local function onLootBoxTap(event)
+    if event.phase == "ended" then
+        -- Get the loot box name from the tapped object
+        local lootBoxName = event.target.lootBoxName
+        print("Tapped on: " .. lootBoxName)  -- Replace this with your desired action
+        -- Call your function here, e.g., redirect to another scene or show details
+        -- composer.gotoScene("sceneName") -- Example of changing scenes
+    end
+    return true
+end
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -29,15 +66,75 @@ function scene:create( event )
 	-- create a white background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor( 1 )	-- white
-	
-	-- create some text
-	local title = display.newText( "First View", display.contentCenterX, 125, native.systemFont, 32 )
-	title:setFillColor( 0 )	-- black
-	
-	-- all objects must be added to group (e.g. self.view)
-	sceneGroup:insert( background )
-	sceneGroup:insert( title )
-	
+
+	-- Create sort button
+    self.sortButton = display.newRoundedRect(display.contentCenterX, 50, 220, 40, 10)
+    self.sortButton:setFillColor(0.95)
+	-- Sort Text
+    self.sortText = display.newText({
+        text = "Sort by: " .. getCurrentSortOrder(),
+        x = self.sortButton.x,
+        y = self.sortButton.y,
+        fontSize = 18
+    })
+    self.sortText:setFillColor(0)
+
+	-- Create the scroll view
+    local scrollView = widget.newScrollView({
+        top = 80,
+        left = 10,
+        width = 300,
+        height = 350,
+        scrollWidth = 300,
+        scrollHeight = 600, -- Adjust based on the number of loot boxes
+        listener = function(event)
+            return true
+        end,
+		horizontalScrollDisabled = true, -- Disable horizontal scrolling
+    })
+
+	-- Create loot box items
+    local yOffset = 50
+    for key, lootBox in pairs(lootBoxes) do
+        local lootBoxDiv = display.newRect(scrollView, 150, yOffset, 280, 90) -- Example item
+        lootBoxDiv:setFillColor(0.5, 0.5, 0.5) -- Example color
+
+		-- Store the loot box name in the rectangle for later use
+		lootBoxDiv.lootBoxName = lootBox.name
+
+		-- Add event listener for the loot box
+		lootBoxDiv:addEventListener("touch", onLootBoxTap)
+
+        local lootBoxName = display.newText({
+            text = lootBox.name,
+            x = lootBoxDiv.x,
+            y = lootBoxDiv.y - 10,
+            font = native.systemFont,
+            fontSize = 20
+        })
+		local lootBoxPrice = display.newText({
+            text = tostring(lootBox.price),
+            x = lootBoxDiv.x,
+            y = lootBoxDiv.y + 15,
+            font = native.systemFont,
+            fontSize = 20
+        })
+
+
+        -- Insert items into the scroll view
+        scrollView:insert(lootBoxDiv)
+        scrollView:insert(lootBoxName)
+		scrollView:insert(lootBoxPrice)
+
+        -- Update yOffset for the next loot box
+        yOffset = yOffset + 100 -- Adjust based on the height of each item
+    end
+
+	sceneGroup:insert( background )						-- all objects must be added to group (e.g. self.view)
+    self.sortButton:addEventListener("tap", onSortTap)	-- Add event listener to the sort button
+    sceneGroup:insert(self.sortButton)					-- Insert button and text into the scene group
+    sceneGroup:insert(self.sortText)
+	sceneGroup:insert(scrollView)						-- Insert the scroll view into the scene group
 end
 
 function scene:show( event )

@@ -4,7 +4,7 @@ local json = require("json")
 -- Load the loot table from the JSON file
 local filePath = system.pathForFile("lootTable.json", system.DocumentsDirectory)
 local file = io.open(filePath, "r")
-local lootTable
+local lootTable = {}
 if file then
     local contents = file:read("*a")
     lootTable = json.decode(contents)  -- Decoding JSON into a Lua table
