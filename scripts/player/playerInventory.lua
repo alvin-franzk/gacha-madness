@@ -22,4 +22,17 @@ function playerInventory.showLoot()
     return playerInventory.items
 end
 
+-- Function to calculate the total value of all loot in the inventory
+function playerInventory.getTotalValue()
+    local totalValue = 0
+    if playerInventory.items then
+        for _, item in ipairs(playerInventory.items) do
+            totalValue = totalValue + (item.value or 0)  -- Add the item's value, defaulting to 0 if not present
+        end
+        return totalValue
+    else
+        return totalValue
+    end
+end
+
 return playerInventory

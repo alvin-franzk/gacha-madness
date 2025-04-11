@@ -1,21 +1,24 @@
--- Load the JSON module
 local json = require("json")
 
 -- Load the loot table from the JSON file
-local filePath = system.pathForFile("lootTable.json", system.DocumentsDirectory)
+local filePath = system.pathForFile("scripts/loot/lootTable.json", system.ResourceDirectory)
 local file = io.open(filePath, "r")
 local lootTable = {}
+
 if file then
     local contents = file:read("*a")
     lootTable = json.decode(contents)  -- Decoding JSON into a Lua table
     io.close(file)
+    print("Loot table loaded successfully.")  -- Debug print
+else
+    print("Failed to open lootTable.json at path: " .. filePath)  -- Debug print
 end
 
 -- Function to get loot details by name
 local function getLootDetails(lootName)
-    for tier, loot in pairs(lootTable) do -- for ever tier, loop through these loot
+    for tier, loot in pairs(lootTable) do -- for every tier, loop through these loot
         if loot[lootName] then
-            local lootData = lootTable[tier][lootName]
+            local lootData = loot[lootName]
             return {
                 name = lootName,
                 itemType = lootData.itemType,
@@ -30,7 +33,7 @@ end
 local lootBoxes = {
 
     Commoner = {
-        name = "Commoner's Loot Box",
+        name = "Commoner's Loot Box", -- 5 Junk, 1 Uncommon, 1 Rare
         price = 100,
         isUnlocked = true,
         lootItems = {
@@ -45,7 +48,7 @@ local lootBoxes = {
     },
 
     Noble = {
-        name = "Noble's Loot Box",
+        name = "Noble's Loot Box", -- 3 Junk, 2 Uncommon, 1 Rare
         price = 150,
         isUnlocked = true,
         lootItems = {
@@ -59,7 +62,7 @@ local lootBoxes = {
     },
 
     Warrior = {
-        name = "Warrior's Loot Box",
+        name = "Warrior's Loot Box", -- 3 Common, 2 Uncommon, 2 Rare
         price = 250,
         isUnlocked = true,
         lootItems = {

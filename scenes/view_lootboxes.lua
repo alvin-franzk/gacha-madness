@@ -46,9 +46,10 @@ end
 local function onLootBoxTap(event)
     if event.phase == "ended" then
         -- Get the loot box name from the tapped object
-        local lootBoxName = event.target.lootBoxName
-        print("Tapped on: " .. lootBoxName)  -- Replace this with your desired action
+        local lootBox = event.target.lootBox
+        print("Tapped on: " .. lootBox.name)  -- Replace this with your desired action
         -- Call your function here, e.g., redirect to another scene or show details
+		core.openLootBox(lootBox)
         -- composer.gotoScene("sceneName") -- Example of changing scenes
     end
     return true
@@ -100,7 +101,7 @@ function scene:create( event )
         lootBoxDiv:setFillColor(0.5, 0.5, 0.5) -- Example color
 
 		-- Store the loot box name in the rectangle for later use
-		lootBoxDiv.lootBoxName = lootBox.name
+		lootBoxDiv.lootBox = lootBox
 
 		-- Add event listener for the loot box
 		lootBoxDiv:addEventListener("touch", onLootBoxTap)

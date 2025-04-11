@@ -54,12 +54,33 @@ local function getLoot(lootBox)
     return selectedLootItem
 end
 
+----TEMP
+local function displayLootBoxItems(lootBox)
+    if not lootBox or not lootBox.lootItems then
+        print("Invalid loot box or no items to display.")
+        return
+    end
+
+    print("Items in " .. lootBox.name .. ":")
+    for _, item in ipairs(lootBox.lootItems) do
+        if item then  -- Check if the item is not nil
+            print(string.format(" - Name: %s, Type: %s, Rarity: %s, Value: %d", 
+                item.name, item.itemType, item.rarity, item.value))
+        else
+            print(" - Item is nil.")
+        end
+    end
+end
+----TEMP
+
 -- Function to open the loot box
 local function openLootBox(lootBox)
     -- Check if player has enough currency to open
-    if playerCurrency.getBalance >= lootBox.price then
+    if playerCurrency.getBalance() >= lootBox.price then
         -- Deduct player currency
         playerCurrency.deductCurrency(lootBox.price)
+        print("Current Balance: " .. playerCurrency.getBalance())
+        updateCurrencyText()
 
         -- DEBUG: Console stuff
         print("Opening loot box: " .. lootBox.name)
@@ -67,12 +88,14 @@ local function openLootBox(lootBox)
 
         -- Get one item based on rarity chances
         local lootItem = getLoot(lootBox)
-        -- Store loot to player inventory
-        playerInventory.storeLoot(lootItem)
 
         -- DEBUG: Print the selected loot item
         if lootItem then
             print(string.format("Received %s (%s) - Value: %d", lootItem.name, lootItem.itemType, lootItem.value))
+            -- Store loot to player inventory
+            playerInventory.storeLoot(lootItem)
+            print("Stored loot: " .. lootItem.name .. " in player inventory.")
+            updateProjectedLootValueText()
         else
             print("No loot found.")
         end
@@ -80,3 +103,8 @@ local function openLootBox(lootBox)
         print("Not enough currency.") -- #TODO: Replace with function that shows message box
     end
 end
+
+return {
+    openLootBox = openLootBox,
+    displayLootBoxItems = displayLootBoxItems
+    }

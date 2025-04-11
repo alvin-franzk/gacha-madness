@@ -11,6 +11,7 @@ display.setStatusBar( display.HiddenStatusBar )
 local widget = require "widget"
 local composer = require "composer"
 local playerCurrency = require "scripts.player.playerCurrency"
+local playerInventory = require "scripts.player.playerInventory"
 
 -- event listeners for tab buttons:
 local function showLootBoxesView()
@@ -56,7 +57,7 @@ local tabButtons = {
 
 -- create the actual tabBar widget
 local tabBar = widget.newTabBar{
-	top = display.contentHeight - 50,	-- 50 is default height for tabBar widget
+	top = display.contentHeight - 7,	-- 50 is default height for tabBar widget
 	buttons = tabButtons
 }
 
@@ -79,4 +80,24 @@ local currencyText = display.newText({
 })
 currencyText:setFillColor(0)
 
+local projectedLootValueText = display.newText({
+    parent = topBar,
+    text = tostring(playerInventory.getTotalValue()),
+    x = 250,
+    y = -20,
+    font = native.systemFontBold,
+    fontSize = 28
+})
+projectedLootValueText:setFillColor(0)
+
 showLootBoxesView()	-- invoke first tab button's onPress event manually
+
+-- Global function to update the currency text
+function updateCurrencyText()
+    currencyText.text = tostring(playerCurrency.getBalance())  -- Update the text with the current balance
+end
+
+-- Global function to update the currency text
+function updateProjectedLootValueText()
+    projectedLootValueText.text = tostring(playerInventory.getTotalValue())  -- Update the text
+end
