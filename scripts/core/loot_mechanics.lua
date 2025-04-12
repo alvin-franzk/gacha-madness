@@ -4,23 +4,22 @@ local lootBoxes = require("scripts.loot.lootBoxes")
 
 -- Function to select loot based on rarity probabilities
 local function getLoot(lootBox)
-    math.randomseed(os.time()) -- rng seed
     -- Weights for the rarities (higher weight means higher chance)
     local rarityWeights = {
-        Junk = 70,          -- 70% chance for Junk loot
-        Common = 50,        -- 50% chance for Common loot
-        Uncommon = 30,      -- 30% chance for Uncommon loot
-        Rare = 20,          -- 20% chance for Rare loot
+        Junk = 22.0,         -- 22.0% chance for Junk loot
+        Common = 20.5,       -- 20.5% chance for Common loot
+        Uncommon = 15.0,     -- 15.0% chance for Uncommon loot
+        Rare = 12.5,         -- 12.5% chance for Rare loot
 
-        Epic = 15,          -- 15% chance for Epic loot
-        Legendary = 13,     -- 13% chance for Legendary loot
-        Mythical = 12,      -- 12% chance for Mythical loot
-        Arcane = 10,        -- 10% chance for Arcane loot
+        Epic = 10.0,         -- 10.0% chance for Epic loot
+        Legendary = 7.5,     -- 7.5% chance for Legendary loot
+        Mythical = 5.0,      -- 5.0% chance for Mythical loot
+        Arcane = 2.5,        -- 2.5% chance for Arcane loot
 
-        Demonic = 5,        -- 5% chance for Demonic loot
-        Voidlike = 3,       -- 3% chance for Voidlike loot
-        Divine = 2,         -- 2% chance for Divine loot
-        Cosmic = 1          -- 1% chance for Cosmic loot
+        Demonic = 2.0,       -- 2.0% chance for Demonic loot
+        Voidlike = 1.5,      -- 1.5% chance for Voidlike loot
+        Divine = 1.0,        -- 1.0% chance for Divine loot
+        Cosmic = 0.5         -- 0.5% chance for Cosmic loot
     }
 
     -- final variables
@@ -33,9 +32,8 @@ local function getLoot(lootBox)
         totalWeight = totalWeight + rarityWeights[loot.rarity]
     end
 
-    -- #TODO: Fix loot retrieval algorithm
     -- Then, generate a random number to determine which loot are possible
-    local randomNum = math.random(1, totalWeight)
+    local randomNum = math.random(rarityWeights[Cosmic], totalWeight)
     local runningWeight = 0
     
     -- Collect all items that fall under the chosen weight
@@ -104,7 +102,14 @@ local function openLootBox(lootBox)
     end
 end
 
+-- Function to sell loot
+local function sellLoot(loot, amount)
+    playerCurrency.addCurrency(loot.value * amount)
+    playerInventory.removeLoot(loot, amount)
+end
+
 return {
     openLootBox = openLootBox,
+    sellLoot = sellLoot,
     displayLootBoxItems = displayLootBoxItems
     }

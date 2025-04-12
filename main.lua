@@ -13,6 +13,8 @@ local composer = require "composer"
 local playerCurrency = require "scripts.player.playerCurrency"
 local playerInventory = require "scripts.player.playerInventory"
 
+math.randomseed(os.time()) -- rng seed
+
 -- event listeners for tab buttons:
 local function showLootBoxesView()
 	composer.gotoScene( "scenes.view_lootboxes" )

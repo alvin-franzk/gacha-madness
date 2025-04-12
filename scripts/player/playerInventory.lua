@@ -8,17 +8,22 @@ function playerInventory.storeLoot(loot)
 end
 
 -- Function to remove an item from the inventory
-function playerInventory.removeLoot(loot)
+function playerInventory.removeLoot(loot, amount)
+    amount = amount or 1  -- Default to 1 if amount is not provided
+    local count = 0  -- Counter for how many items removed
     for i = #playerInventory.items, 1, -1 do
         if playerInventory.items[i].name == loot.name then
             table.remove(playerInventory.items, i)
-            break -- remove only one match
+            count = count + 1
+            if count >= amount then
+                break  -- Stop removing if we've removed the specified amount
+            end
         end
     end
 end
 
--- Function to show the current inventory
-function playerInventory.showLoot()
+-- Function to return loot items
+function playerInventory.returnLootItems()
     return playerInventory.items
 end
 
