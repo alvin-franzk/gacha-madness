@@ -47,7 +47,6 @@ local function onLootBoxTap(event)
     if event.phase == "ended" then
         -- Get the loot box name from the tapped object
         local lootBox = event.target.lootBox
-        print("Tapped on: " .. lootBox.name)  -- Replace this with your desired action
         -- Call your function here, e.g., redirect to another scene or show details
 		core.openLootBox(lootBox)
         -- composer.gotoScene("sceneName") -- Example of changing scenes
