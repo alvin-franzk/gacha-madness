@@ -58,7 +58,7 @@ local lootBoxes = {
 
     SamuraiArmory = {
         name = "Samurai Armory Chest",
-        price = 5000,  -- Worthy of a daimyo's gift
+        price = 3000,  -- Worthy of a daimyo's gift
         isUnlocked = true,
         lootItems = {
             -- Junk (Peasant/Improvised)
