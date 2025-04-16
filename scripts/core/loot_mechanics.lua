@@ -116,12 +116,14 @@ local function openLootBox(lootBox)
             audioCue.playAudio(lootItem.rarity) -- play rarity audio
             playerInventory.storeLoot(lootItem) -- Store loot to player inventory
             updateProjectedLootValueText()
+            return lootItem
         else
             print("No loot found.")
+            return nil
         end
     else
         audioCue.playAudio("noCurrency")
-        print("Not enough currency.") -- #TODO: Replace with function that shows message box
+        native.showAlert("Not enough currency.")
     end
 end
 

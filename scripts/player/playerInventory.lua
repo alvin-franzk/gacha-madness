@@ -1,6 +1,25 @@
-local playerInventory = {}
+local playerInventory = {
+    items = {},
+    newItems = {}
+}
 
-playerInventory.items = {}
+-- Add with default image support
+function playerInventory.addItem(item)
+    item.id = item.id or #playerInventory.items + 1
+    item.img = item.img or "assets/ui/default_item.png"
+    table.insert(playerInventory.items, item)
+    playerInventory.newItems[item.id] = true
+    updateProjectedLootValueText()  -- Update main UI
+end
+
+-- Get total value of all items
+function playerInventory.getTotalValue()
+    local total = 0
+    for _, item in ipairs(playerInventory.items) do
+        total = total + (item.value or 0)
+    end
+    return total
+end
 
 -- Function to add an item to the inventory
 function playerInventory.storeLoot(loot)
@@ -25,19 +44,6 @@ end
 -- Function to return loot items
 function playerInventory.returnLootItems()
     return playerInventory.items
-end
-
--- Function to calculate the total value of all loot in the inventory
-function playerInventory.getTotalValue()
-    local totalValue = 0
-    if playerInventory.items then
-        for _, item in ipairs(playerInventory.items) do
-            totalValue = totalValue + (item.value or 0)  -- Add the item's value, defaulting to 0 if not present
-        end
-        return totalValue
-    else
-        return totalValue
-    end
 end
 
 return playerInventory

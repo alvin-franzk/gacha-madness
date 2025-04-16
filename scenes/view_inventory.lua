@@ -1,12 +1,11 @@
------------------------------------------------------------------------------------------
---
--- view2.lua
---
------------------------------------------------------------------------------------------
-
+-----------------------
+--view_inventory.lua---
+-----------------------
 local widget = require("widget")
 local composer = require( "composer" )
 local scene = composer.newScene()
+local playerInventory = require("scripts.player.playerInventory")
+local core = require("scripts.core.loot_mechanics")
 
 function scene:create( event )
 	local sceneGroup = self.view
