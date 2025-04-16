@@ -1,14 +1,13 @@
 local playerCurrency = require("scripts.player.playerCurrency")
 local playerInventory = require("scripts.player.playerInventory")
 local lootBoxes = require("scripts.loot.lootBoxes")
+local audioCue = require("scripts.audio.audio_cues")
 
--- DEBUG
-local function printTable(t)
-    for key, value in pairs(t) do
-        print(key .. ": " .. tostring(value))
-    end
-end
--- DEBUG
+local rarityOrder = {
+    "Junk", "Common", "Uncommon", "Rare", "Epic", 
+    "Legendary", "Mythical", "Arcane", "Demonic", 
+    "Voidlike", "Divine", "Cosmic"
+}
 
 -- Function to select loot based on rarity probabilities
 local function getLoot(lootBox)
@@ -28,51 +27,44 @@ local function getLoot(lootBox)
         Cosmic = 0.04,       -- 0.04% chance for Cosmic loot
     }
 
-    -- Step 1: Calculate total weight based on rarityWeights
-    local totalWeight = 0
-    local cumulativeWeights = {}
-    local currentWeight = 0
+    -- Define the desired print order
+    local rarityOrder = {
+        "Junk", "Common", "Uncommon", "Rare", "Epic", 
+        "Legendary", "Mythical", "Arcane", "Demonic", 
+        "Voidlike", "Divine", "Cosmic"
+    }
 
-    -- Count the number of items for each rarity
+    -- 1. Count rarities IN ORDER
     local rarityCounts = {}
     for _, item in ipairs(lootBox.lootItems) do
         rarityCounts[item.rarity] = (rarityCounts[item.rarity] or 0) + 1
     end
-    print("Rarity Counts: ")
-    printTable(rarityCounts)
+
+    -- 2. Calculate weights IN ORDER
+    local totalWeight, currentWeight = 0, 0
+    local cumulativeWeights = {}
 
     -- Calculate total weight and cumulative weights based on loot box items
-    for rarity, count in pairs(rarityCounts) do
-        local weight = rarityWeights[rarity]  -- Get the weight for the item's rarity
-        if weight then
-            local totalRarityWeight = weight * count  -- Calculate total weight for this rarity
-            totalWeight = totalWeight + totalRarityWeight
-            currentWeight = currentWeight + totalRarityWeight
-            cumulativeWeights[rarity] = currentWeight  -- Store cumulative weight for this rarity
+    for _, rarity in ipairs(rarityOrder) do
+        if rarityCounts[rarity] then
+            local weight = rarityWeights[rarity] * rarityCounts[rarity]
+            totalWeight = totalWeight + weight
+            currentWeight = currentWeight + weight
+            cumulativeWeights[rarity] = currentWeight
         end
     end
 
-    -- DEBUG
-    print("Cumulative Weights: ")
-    printTable(cumulativeWeights)
-    print("Total Weight: " .. totalWeight)
-    -- DEBUG
-
     -- Step 2: Generate a random roll between 0 and totalWeight
     local roll = math.random() * totalWeight
-    -- DEBUG
-    print("Roll: " .. roll)
-    -- DEBUG
 
     -- Step 3: Determine which rarity the roll corresponds to
     local selectedRarity = nil
-    for rarity, weight in pairs(cumulativeWeights) do
-        if roll <= weight then
+    for _, rarity in ipairs(rarityOrder) do
+        if cumulativeWeights[rarity] and roll <= cumulativeWeights[rarity] then
             selectedRarity = rarity
             break
         end
     end
-    print("Selected Rarity: " .. (selectedRarity or "None"))
 
     -- Step 4: Collect loot items of the selected rarity
     local eligibleItems = {} -- table for eligible loot
@@ -94,12 +86,10 @@ local function getLoot(lootBox)
             end
             if #foundItems > 0 then
                 eligibleItems = foundItems
-                print("Selected Rarity not Found. Closest Rarity: " .. rarity)
                 break  -- Found an available rarity with items
             end
         end
     end
-    printTable(eligibleItems)
 
     -- Step 6: Randomly select one item from the eligible items
     if #eligibleItems > 0 then
@@ -111,47 +101,26 @@ local function getLoot(lootBox)
     end
 end
 
-----TEMP
-local function displayLootBoxItems(lootBox)
-    if not lootBox or not lootBox.lootItems then
-        print("Invalid loot box or no items to display.")
-        return
-    end
-
-    print("Items in " .. lootBox.name .. ":")
-    for _, item in ipairs(lootBox.lootItems) do
-        if item then  -- Check if the item is not nil
-            print(string.format(" - Name: %s, Type: %s, Rarity: %s, Value: %d", 
-                item.name, item.itemType, item.rarity, item.value))
-        else
-            print(" - Item is nil.")
-        end
-    end
-end
-----TEMP
-
 -- Function to open the loot box
 local function openLootBox(lootBox)
-    -- Check if player has enough currency to open
-    if playerCurrency.getBalance() >= lootBox.price then
-        -- Deduct player currency
-        playerCurrency.deductCurrency(lootBox.price)
+    if playerCurrency.getBalance() >= lootBox.price then    -- Check if player has enough currency to open
+        playerCurrency.deductCurrency(lootBox.price)    -- Deduct player currency
         updateCurrencyText()
         print("Opening Loot Box: " .. lootBox.name)
-        -- Get one item based on rarity chances
-        local lootItem = getLoot(lootBox)
+        -- audioCue.playAudio("openLootBox")    -- play open loot box sound
+        local lootItem = getLoot(lootBox)   -- Get one item based on rarity chances
 
         -- DEBUG: Print the selected loot item
         if lootItem then
             print(string.format("Received %s (%s) - Value: %d - Rarity: %s", lootItem.name, lootItem.itemType, lootItem.value, lootItem.rarity))
-            -- Store loot to player inventory
-            playerInventory.storeLoot(lootItem)
-            -- print("Stored loot: " .. lootItem.name .. " in player inventory.")
+            audioCue.playAudio(lootItem.rarity) -- play rarity audio
+            playerInventory.storeLoot(lootItem) -- Store loot to player inventory
             updateProjectedLootValueText()
         else
             print("No loot found.")
         end
     else
+        audioCue.playAudio("noCurrency")
         print("Not enough currency.") -- #TODO: Replace with function that shows message box
     end
 end
@@ -164,6 +133,5 @@ end
 
 return {
     openLootBox = openLootBox,
-    sellLoot = sellLoot,
-    displayLootBoxItems = displayLootBoxItems
+    sellLoot = sellLoot
     }

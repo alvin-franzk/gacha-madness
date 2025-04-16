@@ -1,18 +1,10 @@
-local json = require("json")
-
--- Load the loot table from the JSON file
-local filePath = system.pathForFile("scripts/loot/lootTable.json", system.ResourceDirectory)
-local file = io.open(filePath, "r")
-local lootTable = {}
-
-if file then
-    local contents = file:read("*a")
-    lootTable = json.decode(contents)  -- Decoding JSON into a Lua table
-    io.close(file)
-    print("Loot table loaded successfully.")  -- Debug print
+local lootTable = require("scripts.loot.lootTable")
+if lootTable then
+    print("Loot table loaded successfully.")
 else
-    print("Failed to open lootTable.json at path: " .. filePath)  -- Debug print
+    print("Loot table Not Found.")
 end
+
 
 -- Function to get loot details by name
 local function getLootDetails(itemName)
@@ -102,11 +94,14 @@ local lootBoxes = {
     
             -- Uncommon (30%)
             getLootDetails("Monkey King Bar"),  -- Size-changing staff (common variant)
-            getLootDetails("Griffon-Feather Cloak"),  -- Phoenix feather gift
-            getLootDetails("Boots of Blistering Speed"),  -- Cloud-stepping practice
-    
+            getLootDetails("Repeating Crossbow"),
+            getLootDetails("Glaive"),
+            getLootDetails("Wyvern Hide Boots"),
+            getLootDetails("Short Bow"),
+
             -- Rare (20%)
-            getLootDetails("Cloak of Dramatic Billowing"),  -- Battle cloak
+            getLootDetails("Boots of Blistering Speed"),  -- Cloud-stepping practice
+            getLootDetails("Griffon-Feather Cloak"),  -- Phoenix feather gift
             getLootDetails("Helm of the Lone Wolf"),  -- Rebel headgear
             getLootDetails("Sword of a Thousand Papercuts"),  -- Precision weapon
     
@@ -115,6 +110,7 @@ local lootBoxes = {
             getLootDetails("Cloak of Invisibility"),  -- Magic hair transformation
     
             -- Legendary (1%)
+            getLootDetails("Cloak of Dramatic Billowing"),  -- Battle cloak
             getLootDetails("Ruyi Jingu Bang")  -- True divine staff
         },
         desc = "A chest that smells faintly of peaches and rebellion. Contents may include training relics, questionably obtained celestial gear, or that staff the Dragon King keeps filing complaints about."
